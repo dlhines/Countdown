@@ -261,14 +261,4 @@ int Countdown::numberGenerator(int min, int max) {
   std::mt19937 gen(seeder());
   std::uniform_int_distribution<> dist(min, max);
   return dist(gen);
-
-  // // Seed with a real random value, if available
-  // std::random_device r;
-  //
-  // // Choose a random mean between 1 and 6
-  // std::default_random_engine e1(r());
-  // std::uniform_int_distribution<int> uniform_dist(min, max);
-  // int _rand = uniform_dist(e1);
-  //
-  // return _rand;
 }
