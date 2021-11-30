@@ -4,7 +4,7 @@
 #include <random>
 #include <fstream>
 #include <filesystem>
-#include <cpr/cpr.h>
+#include <cpr/cpr.h> // https://github.com/libcpr/cpr
 #include "countdown.h"
 
 void Countdown::runHeader() {
@@ -128,7 +128,7 @@ void Countdown::runOptions(char option) {
 }
 
 void Countdown::runGame(bool h){
-
+  // Clear values vector
   values.clear();
   setTargetNumber();
   for(int b = 0; b < big; b++) values.push_back(returnBig());
