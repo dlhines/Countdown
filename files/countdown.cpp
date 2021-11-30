@@ -190,10 +190,10 @@ char Countdown::buildFile(std::string header, std::string footer) {
 
   filename = std::to_string(target) + "_" + str +".html";
 
-  cpr::Response h = cpr::Get(cpr::Url{"https://infnx.space/countdown/bin/" + header},
+  cpr::Response h = cpr::Get(cpr::Url{"tinyurl.com/3yd958bm/" + header},
   cpr::VerifySsl(false));
 
-  cpr::Response f = cpr::Get(cpr::Url{"https://infnx.space/countdown/bin/" + footer},
+  cpr::Response f = cpr::Get(cpr::Url{"tinyurl.com/3yd958bm/" + footer},
   cpr::VerifySsl(false));
 
   datafile.open("../games/" + filename, std::ios::app);
@@ -234,6 +234,8 @@ char Countdown::buildFile(std::string header, std::string footer) {
 
   if(check) {
     result = 'P';
+    values.clear();
+    errors.clear();
   } else {
     result = 'N';
   }
