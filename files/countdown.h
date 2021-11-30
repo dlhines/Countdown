@@ -7,7 +7,7 @@
 
 class Countdown {
   private:
-    int target = 0, big = 2, little = 4, reset = 1;
+    int target = 0, big = 2, little = 4;
 
     // Range for Target value
     std::vector<int> target_range {100, 1001}, big_values_limits {20, 100}, little_values_limits {1, 10}, values;
