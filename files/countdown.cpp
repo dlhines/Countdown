@@ -4,10 +4,12 @@
 #include <random>
 #include <fstream>
 #include <filesystem>
+#include <boost/dll.hpp>
 #include <cpr/cpr.h> // https://github.com/libcpr/cpr
 #include "countdown.h"
 
 void Countdown::runHeader() {
+  std::cout <<  << std::endl;
   std::cout << "------------------------" << std::endl;
   std::cout << "| Welcome to COUNTDOWN |" << std::endl;
   std::cout << "------------------------" << std::endl;
@@ -232,7 +234,7 @@ char Countdown::buildFile(std::string header, std::string footer) {
 
         // Write game data
         datafile << "<h1>" << std::to_string(target) << "</h1>\n";
-        datafile << "<div class=\"center-box container\">\n" << h.status_code;
+        datafile << "<div class=\"center-box container\">\n";
         for(int ele : values) datafile << "<span class=\"values\">" << ele << "</span>\n";
         datafile << "</div>\n";
 
