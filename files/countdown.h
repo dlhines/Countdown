@@ -4,14 +4,24 @@
 #include <cctype>
 #include <vector>
 #include <random>
+#include <filesystem>
 
 class Countdown {
   private:
-    int target = 0, big = 2, little = 4;
+    int target = 0, big = 2, little = 4, solve;
+    // std::string path = std::filesystem::current_path();
+    // std::string toReplace("files");
+    // std::size_t pos = path.find(toReplace);
+    // std::path.replace(pos, toReplace.length(), "games");
 
     // Range for Target value
-    std::vector<int> target_range {100, 1001}, big_values_limits {20, 100}, little_values_limits {1, 10}, values;
-    std::vector<std::string> file, errors;
+    std::vector<int> target_range {100, 1001},
+    big_values_limits {20, 100},
+    little_values_limits {1, 10},
+    values;
+
+    std::vector<std::string> file,
+    errors;
 
     // Continue or End
     char option;

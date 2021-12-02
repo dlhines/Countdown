@@ -8,7 +8,6 @@
 #include "countdown.h"
 
 void Countdown::runHeader() {
-  std::cout << clear;
   std::cout << "------------------------" << std::endl;
   std::cout << "| Welcome to COUNTDOWN |" << std::endl;
   std::cout << "------------------------" << std::endl;
@@ -32,6 +31,9 @@ void Countdown::regenerateHeader(char head) {
       break;
     case 's' :
       std::cout << "You have " << little << " Small values set" << std::endl;
+      break;
+    case 'v' :
+      std::cout << "Working on solving..." << std::endl;
       break;
     case 'l' :
       std::cout << "You have " << big << " Large values set" << std::endl;
@@ -58,13 +60,37 @@ void Countdown::regenerateHeader(char head) {
       std::cout << "Success! " << filename << " was created in the games folder!" << std::endl;
       break;
     case 'H' :
-      std::cout << "FAILED! Header file was not found for file creation." << std::endl;
+      std::cout << "FAILED! Header file was not found for file creation.";
+      if(errors.size() == 0) {
+        std::cout << "Check errors below:" << std::endl;
+        for (auto errs : errors) {
+          std::cout << "- " << errs << std::endl;
+        }
+        errors.clear();
+      }
+      std::cout << std::endl;
       break;
     case 'B' :
       std::cout << "FAILED! " << filename << " has failed to be created." << std::endl;
+      if(errors.size() == 0) {
+        std::cout << "Check errors below:" << std::endl;
+        for (auto errs : errors) {
+          std::cout << "- " << errs << std::endl;
+        }
+        errors.clear();
+      }
+      std::cout << std::endl;
       break;
     case 'F' :
-      std::cout << "FAILED! Footer file was not found for file creation." << std::endl;
+      std::cout << "FAILED! Footer file was not found for file creation.Check errors below:" << std::endl;
+      if(errors.size() == 0) {
+        std::cout << "Check errors below:" << std::endl;
+        for (auto errs : errors) {
+          std::cout << "- " << errs << std::endl;
+        }
+        errors.clear();
+      }
+      std::cout << std::endl;
       break;
     case 'N' :
       std::cout << filename << " was not created. Check errors below:" << std::endl;
@@ -196,48 +222,44 @@ char Countdown::buildFile(std::string header, std::string footer) {
   cpr::Response f = cpr::Get(cpr::Url{"tinyurl.com/3yd958bm/" + footer},
   cpr::VerifySsl(false));
 
-  datafile.open("../games/" + filename, std::ios::app);
+  datafile.open("/home/admin-daniel/countdown/games/" + filename, std::ios::app);
 
-  if (h.text.length() != 0) {
-    result = 'P';
+  if (h.status_code == 200) {
+    if (f.status_code == 200) {
+      if (datafile) {
+        // Write header to file
+        datafile << h.text << std::endl;
+
+        // Write game data
+        datafile << "<h1>" << std::to_string(target) << "</h1>\n";
+        datafile << "<div class=\"center-box container\">\n" << h.status_code;
+        for(int ele : values) datafile << "<span class=\"values\">" << ele << "</span>\n";
+        datafile << "</div>\n";
+
+        // Write footer to file
+        datafile << f.text << std::endl;
+        datafile.close();
+
+      } else {
+        result = 'B';
+      }
+
+      bool check = std::filesystem::exists("/home/admin-daniel/countdown/games/" + filename);
+
+      if(check) {
+        result = 'P';
+        values.clear();
+        errors.clear();
+      } else {
+        result = 'N';
+      }
+    } else {
+      errors.push_back(f.error.message);
+      result = 'F';
+    }
   } else {
     errors.push_back(h.error.message);
     result = 'H';
-  }
-
-  if (f.text.length() != 0) {
-    result = 'P';
-  } else {
-    errors.push_back(f.error.message);
-    result = 'F';
-  }
-
-  if (datafile) {
-    // Write header to file
-    datafile << h.text << std::endl;
-
-    // Write game data
-    datafile << "<h1>" << std::to_string(target) << "</h1>\n";
-    datafile << "<div class=\"center-box container\">\n";
-    for(int ele : values) datafile << "<span class=\"values\">" << ele << "</span>\n";
-    datafile << "</div>\n";
-
-    // Write footer to file
-    datafile << f.text << std::endl;
-    datafile.close();
-
-  } else {
-    result = 'B';
-  }
-
-  bool check = std::filesystem::exists("../games/" + filename);
-
-  if(check) {
-    result = 'P';
-    values.clear();
-    errors.clear();
-  } else {
-    result = 'N';
   }
 
   return result;
